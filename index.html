@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OREX POWER SYSTEMS</title>
+</head>
+<body>
+  <div id="accessCodePage">
+    <input type="password" id="accessCode" placeholder="Enter code">
+    <button onclick="checkAccessCode()">Enter</button>
+    <div id="accessError"></div>
+  </div>
+
+  <div id="homePage" class="hidden">
+    <form id="jobForm">
+      <input type="text" id="custName" />
+      <input type="tel" id="phone" />
+      <input type="text" id="itemName" />
+      <input type="date" id="dateGiven" />
+      <input type="date" id="pickupDate" />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const correctCode = "OREX2025";
+
+    function checkAccessCode() {
+      const enteredCode = document.getElementById('accessCode').value.trim();
+      if (enteredCode === correctCode) {
+        localStorage.setItem("accessGranted", "yes");
+        document.getElementById("accessCodePage").classList.add("hidden");
+        document.getElementById("homePage").classList.remove("hidden");
+      } else {
+        document.getElementById("accessError").textContent = "Incorrect code.";
+      }
+    }
+
+    if (localStorage.getItem("accessGranted") === "yes") {
+      document.getElementById("accessCodePage").classList.add("hidden");
+      document.getElementById("homePage").classList.remove("hidden");
+    }
+
+    document.getElementById('jobForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const itemName = document.getElementById('itemName').value.trim();
+      const dateGiven = document.getElementById('dateGiven').value;
+      const pickupDate = document.getElementById('pickupDate').value;
+
+      const message =
+        `Hello ${name}! Thank you for giving your item for repair at OREX POWER SYSTEMS.%0A%0A` +
+        `Item: ${itemName}%0AReceived: ${dateGiven}%0APickup: ${pickupDate}%0A%0A` +
+        `Contact:%0A8075537916%0A9846527291%0A%0A` +
+        `We appreciate your business.`;
+
+      window.location.href = `https://wa.me/91${phone}?text=${message}`;
+    });
+  </script>
+</body>
+</html>
